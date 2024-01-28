@@ -226,11 +226,15 @@ export default defineComponent({
 
     const handleCreate = () => {
       leftDrawerOpen.value = false;
+      localData.data = localData.data.filter((data) => {
+        return data.history.length > 0;
+      });
       localData.data.unshift({
         title: "",
         timestamp: Date.now(),
         history: [],
       });
+
       localData.selectedIndex = 0;
     };
 
