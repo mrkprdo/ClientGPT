@@ -50,7 +50,7 @@
         type="textarea"
         rows="2"
         placeholder="Message ClientGPT..."
-        class="col-7"
+        class="col-10"
         style="overflow-y: auto; resize: none !important"
       >
         <!-- <template v-slot:hint> Field hint </template> -->
@@ -98,6 +98,7 @@ export default defineComponent({
   setup() {
     const userInput = ref("");
     const streamText = ref("");
+    const timeout = 20000;
     const waiting = ref(false);
     const config = useConfigStore();
     const localData = useLocalDataStore();
@@ -147,16 +148,12 @@ export default defineComponent({
         content: message,
       };
     };
-    const openai = new OpenAI({
-      baseURL: `http://${config.host}:${config.port}/v1`,
-      apiKey: "not-needed", // This is the default and can be omitted
-      dangerouslyAllowBrowser: true,
-    });
+
     const sendMessage = async () => {
-      waiting.value = true;
       if (userInput.value.trim() === "") {
         return;
       }
+      waiting.value = true;
       const userMessage = userInput.value;
       appendMessage("You", userMessage);
       userInput.value = "";
@@ -164,7 +161,7 @@ export default defineComponent({
       try {
         switch (config.apiCall) {
           case "axios":
-            const apiUrl = `http://${config.host}:${config.port}/v1/chat/completions`;
+            const apiUrl = `${config.host}:${config.port}/v1/chat/completions`;
             const headers = {
               "Content-Type": "application/json",
             };
@@ -175,7 +172,7 @@ export default defineComponent({
               max_tokens: -1,
               stream: false, // stream not supported in axios (client-side request)
             };
-            const timeout = 20000;
+
             const response = await axios.post(
               apiUrl,
               data,
@@ -186,6 +183,12 @@ export default defineComponent({
             appendMessage("AI", aiMessage);
             break;
           case "openai":
+            const openai = new OpenAI({
+              baseURL: `${config.host}:${config.port}/v1`,
+              apiKey: "not-needed", // This is the default and can be omitted
+              dangerouslyAllowBrowser: true,
+              timeout,
+            });
             const stream = openai.beta.chat.completions.stream({
               model: "local-model",
               messages: localData.data[Number(localData.selectedIndex)].history,
