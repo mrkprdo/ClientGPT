@@ -172,8 +172,8 @@ export default defineComponent({
     const serverConfig = ref([
       {
         field: "Host",
-        value: "",
-        placeholder: "192.168.x.x",
+        value: "https://192.168.x.x",
+        placeholder: "https://192.168.x.x",
         type: "text",
         model: host,
       },

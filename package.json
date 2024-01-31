@@ -10,6 +10,7 @@
     "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
+    "clean": "quasar clean",
     "build": "quasar build",
     "ext-add": "quasar ext add",
     "ext-remove": "quasar ext remove",
@@ -28,7 +29,10 @@
   },
   "devDependencies": {
     "@quasar/app-vite": "^1.3.0",
+    "@vue/devtools": "^7.0.13",
     "autoprefixer": "^10.4.2",
+    "cordova": "^12.0.0",
+    "cordova-android": "^12.0.1",
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^9.0.0",

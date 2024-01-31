@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { useLocalStorage } from "@vueuse/core";
 
 export const useConfigStore = defineStore("config", () => {
-  const host = useLocalStorage("host", "localhost");
+  const host = useLocalStorage("host", "http://localhost");
   const port = useLocalStorage("port", "1234");
   const role = useLocalStorage(
     "role",
